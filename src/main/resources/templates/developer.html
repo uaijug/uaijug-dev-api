@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Developer</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>View Developer</h1>
+<a th:href="@{/developers}">Back to Developer List</a>
+<br/><br/>
+<div th:if="${developer}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${developer.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${developer.name}">...</td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>:</td>
+            <td th:utext="${developer.phone}">...</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>:</td>
+            <td th:utext="${developer.email}">...</td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td>:</td>
+            <td th:utext="${developer.address1}">...</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td th:utext="${developer.address2}">...</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td th:utext="${developer.address3}">...</td>
+        </tr>
+        <tr>
+            <td>Postal Code</td>
+            <td>:</td>
+            <td th:utext="${developer.postalCode}">...</td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td>:</td>
+            <td th:utext="${developer.note}">...</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+        <a th:href="@{/developers/{developerId}/edit(developerId=${developer.id})}">Edit</a> |
+        <a th:href="@{/developers/{developerId}/delete(developerId=${developer.id})}">Delete</a>
+    </div>
+    <form th:if="${allowDelete}" th:action="@{/developers/{developerId}/delete(developerId=${developer.id})}" method="POST">
+        Delete this developer? <input type="submit" th:value="Yes" />
+    </form>
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>
