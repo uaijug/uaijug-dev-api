@@ -10,7 +10,8 @@ import java.util.List;
 public interface CrudService<T, ID extends Serializable> {
     T findById(ID id) throws ResourceNotFoundException;
     List<T> findAll(int pageNumber, int rowPerPage);
-    T save(T t) throws BadResourceException, ResourceAlreadyExistsException;
+    List<T> list();
+    T save(T t) throws BadResourceException, ResourceAlreadyExistsException, ResourceNotFoundException;
     void update(T t)
             throws BadResourceException, ResourceNotFoundException;
     void deleteById(ID id) throws ResourceNotFoundException;

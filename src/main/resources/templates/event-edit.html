@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${add} ? 'Create a Event' : 'Edit a Event'"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${add} ? 'Create a Event:' : 'Edit a Event:'"/>
+<a th:href="@{/events}">Back to Event List</a>
+<br/><br/>
+<form th:action="${add} ? @{/events/add} : @{/events/{eventId}/edit(eventId=${event.id})}"
+      th:object="${event}" method="POST">
+    <table border="0">
+        <tr th:if="${event.id}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${event.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+        <tr>
+            <td>date</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{date}"/></td>
+        </tr>
+        <tr>
+            <td>local</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{local}"/></td>
+        </tr>
+
+        <tr>
+            <td>Tempo da reuniao</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{meetingTime}"/></td>
+        </tr>
+
+        <tr>
+            <td>Banner Principal</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{pricipalBanner}"/></td>
+        </tr>
+
+        <tr>
+            <td>Description</td>
+            <td>:</td>
+            <td><textarea type="text" th:field="*{description}"/></textarea></td>
+        </tr>
+
+        <tr>
+            <td>Banner Principal</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{pricipalBanner}"/></td>
+        </tr>
+
+        <tr>
+            <td>Tags</td>
+            <td>:</td>
+            <td>
+                <select class="form-control" th:field="*{tags}" multiple="multiple">
+                    <option th:each="tag : ${tagList}"
+                            th:field="*{tags}"
+                            th:value="${tag.id}"
+                            th:text="${tag.name}">Part name</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>online</td>
+            <td>:</td>
+            <td>
+                <select th:field="*{online}">
+                    <option th:value="0" th:text="Não"></option>
+                    <option th:value="1" th:text="Sim"></option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+</body>
+</html>

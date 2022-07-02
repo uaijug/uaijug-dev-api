@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Class</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>View Class</h1>
+<a th:href="@{/classes}">Back to Class List</a>
+<br/><br/>
+<div th:if="${class}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${class.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${class.name}">...</td>
+        </tr>
+        <tr>
+            <td>Data</td>
+            <td>:</td>
+            <td th:utext="${#temporals.format(class.date, 'dd/MM/yyyy HH:mm:ss')}">...</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+        <a th:href="@{/classes/{classId}/edit(classId=${class.id})}">Edit</a> |
+        <a th:href="@{/classes/{classId}/delete(classId=${class.id})}">Delete</a>
+    </div>
+    <form th:if="${allowDelete}" th:action="@{/classes/{classId}/delete(classId=${class.id})}" method="POST">
+        Delete this class?
+    </form>
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>

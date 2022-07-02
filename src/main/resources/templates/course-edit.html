@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${add} ? 'Create a Course' : 'Edit a Course'"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${add} ? 'Create a Course:' : 'Edit a Course:'"/>
+<a th:href="@{/courses}">Back to Course List</a>
+<br/><br/>
+<form th:action="${add} ? @{/courses/add} : @{/courses/{courseId}/edit(courseId=${course.id})}"
+      th:object="${course}" method="POST">
+    <table border="0">
+        <tr th:if="${course.id}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${course.id}">...</td>
+        </tr>
+        <tr>
+            <td>Titulo</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{title}"/></td>
+        </tr>
+        <tr>
+            <td>Data Inícial</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{startDate}"/></td>
+        </tr>
+        <tr>
+            <td>Date Final</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{endDate}"/></td>
+        </tr>
+        <tr>
+            <td>Carga Horaria</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{workload}"/></td>
+        </tr>
+        <tr>
+            <td>Certificado</td>
+            <td>:</td>
+            <td>
+                <select th:field="*{certificate}">
+                    <option th:value="0" th:text="Não"></option>
+                    <option th:value="1" th:text="Sim"></option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+</body>
+</html>

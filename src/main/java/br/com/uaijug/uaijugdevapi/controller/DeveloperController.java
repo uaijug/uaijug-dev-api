@@ -21,15 +21,6 @@ public class DeveloperController {
     @Autowired
     private DeveloperService developerService;
 
-    @Value("${msg.title}")
-    private String title;
-
-    @GetMapping(value = {"/", "/index"})
-    public String index(Model model) {
-        model.addAttribute("title", title);
-        return "index";
-    }
-
     @GetMapping(value = "/developers")
     public String get(Model model,
                       @RequestParam(value = "page", defaultValue = "1") int pageNumber) {

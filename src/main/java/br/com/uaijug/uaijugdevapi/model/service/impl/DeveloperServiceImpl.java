@@ -1,10 +1,13 @@
-package br.com.uaijug.uaijugdevapi.model.service;
+package br.com.uaijug.uaijugdevapi.model.service.impl;
 
 import br.com.uaijug.uaijugdevapi.exceptions.BadResourceException;
 import br.com.uaijug.uaijugdevapi.exceptions.ResourceAlreadyExistsException;
 import br.com.uaijug.uaijugdevapi.exceptions.ResourceNotFoundException;
+import br.com.uaijug.uaijugdevapi.model.domain.Course;
 import br.com.uaijug.uaijugdevapi.model.domain.Developer;
 import br.com.uaijug.uaijugdevapi.model.repository.DeveloperRepository;
+import br.com.uaijug.uaijugdevapi.model.service.DeveloperService;
+import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +43,12 @@ public class DeveloperServiceImpl implements DeveloperService {
                 Sort.by("id").ascending());
         developerRepository.findAll(sortedByIdAsc).forEach(developers::add);
         return developers;
+    }
+
+    @Override
+    public List<Developer> list() {
+        Iterable<Developer> developers = developerRepository.findAll();
+        return IteratorUtils.toList(developers.iterator());
     }
 
     @Override

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Event List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>Event List</h1>
+
+<div>
+    <nobr>
+        <a th:href="@{/events/add}">Add Event</a> |
+        <a th:href="@{/}">Back to Index</a>
+    </nobr>
+</div>
+<br/><br/>
+<div>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Edit</th>
+        </tr>
+        <tr th:each ="event : ${events}">
+            <td><a th:href="@{/events/{eventId}(eventId=${event.id})}" th:utext="${event.id}">...</a></td>
+            <td><a th:href="@{/events/{eventId}(eventId=${event.id})}" th:utext="${event.name}">...</a></td>
+            <td th:utext="${event.date}">...</td>
+            <td><a th:href="@{/events/{eventId}/edit(eventId=${event.id})}">Edit</a></td>
+        </tr>
+    </table>
+</div>
+<br/><br/>
+<div>
+    <nobr>
+        <span th:if="${hasPrev}"><a th:href="@{/events?page={prev}(prev=${prev})}">Prev</a>&nbsp;&nbsp;&nbsp;</span>
+        <span th:if="${hasNext}"><a th:href="@{/events?page={next}(next=${next})}">Next</a></span>
+    </nobr>
+</div>
+</body>
+</html>

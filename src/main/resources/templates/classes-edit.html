@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${add} ? 'Create a class' : 'Edit a class'" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${add} ? 'Create a class:' : 'Edit a class:'" />
+<a th:href="@{/classes}">Back to class List</a>
+<br/><br/>
+<form th:action="${add} ? @{/classes/add} : @{/classes/{classId}/edit(classId=${class.id})}"
+      th:object="${class}" method="POST">
+    <table border="0">
+        <tr th:if="${class.id}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${class.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{name}" /></td>
+        </tr>
+        <tr>
+            <td>date</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{date}" /></td>
+        </tr>
+    </table>
+    <input type="submit" th:value="${add} ? 'Create' : 'Update'" />
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>

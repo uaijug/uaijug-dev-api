@@ -1,58 +1,49 @@
 package br.com.uaijug.uaijugdevapi.model.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Validated
 @Entity
-@Table(name = "tb_developer", schema = "devs")
+@Table(name = "tb_schedule", schema = "devs")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Developer implements Serializable {
+public class Schedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
     @Size(max = 100)
     private String name;
 
-    @Pattern(regexp ="^\\+?[0-9. ()-]{7,25}$", message = "Phone number")
-    @Size(max = 25)
-    private String phone;
-
-    @Email(message = "Email Address")
-    @Size(max = 100)
-    private String email;
-
-    @Size(max = 50)
-    private String address1;
-
-    @Size(max = 50)
-    private String address2;
-
-    @Size(max = 50)
-    private String address3;
-
-    @Size(max = 20)
-    private String postalCode;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @NotNull
+    private LocalDateTime date;
 
     @Column(length = 4000)
     private String note;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private Class clazz;
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Course</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>View Course</h1>
+<a th:href="@{/courses}">Back to Course List</a>
+<br/><br/>
+<div th:if="${course}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${course.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${course.title}">...</td>
+        </tr>
+        <tr>
+            <td>Start Date</td>
+            <td>:</td>
+            <td th:utext="${course.startDate}">...</td>
+        </tr>
+        <tr>
+            <td>End Date</td>
+            <td>:</td>
+            <td th:utext="${course.endDate}">...</td>
+        </tr>
+        <tr>
+            <td>Carga Horaria</td>
+            <td>:</td>
+            <td th:utext="${course.workload}">...</td>
+        </tr>
+        <tr>
+            <td>Certificado</td>
+            <td>:</td>
+            <td th:utext="${course.certificate} ? 'Tem certificado' : 'Não tem certificado' ">...</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+        <a th:href="@{/courses/{courseId}/edit(courseId=${course.id})}">Edit</a> |
+        <a th:href="@{/courses/{courseId}/delete(courseId=${course.id})}">Delete</a>
+    </div>
+    <form th:if="${allowDelete}" th:action="@{/courses/{courseId}/delete(courseId=${course.id})}" method="POST">
+        Delete this course? <input type="submit" th:value="Yes" />
+    </form>
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>

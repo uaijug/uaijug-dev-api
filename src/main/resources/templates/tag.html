@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Tag</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>View Tag</h1>
+<a th:href="@{/tags}">Back to Tag List</a>
+<br/><br/>
+<div th:if="${tag}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${tag.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${tag.name}">...</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+        <a th:href="@{/tags/{tagId}/edit(tagId=${tag.id})}">Edit</a> |
+        <a th:href="@{/tags/{tagId}/delete(tagId=${tag.id})}">Delete</a>
+    </div>
+    <form th:if="${allowDelete}" th:action="@{/tags/{tagId}/delete(tagId=${tag.id})}" method="POST">
+        Delete this tag?
+    </form>
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>
