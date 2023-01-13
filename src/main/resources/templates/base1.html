@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" th:fragment="layout (conteudo)">
+<head>
+    <meta charset="UTF-8">
+    <title>Herança de Templates</title>
+</head>
+<body>
+<header>
+    <h1>Listagem</h1>
+</header>
+
+<main th:include="${conteudo}">
+    Contéudo Principal
+</main>
+
+<footer>
+    <span>Rodapé definido no template base</span>
+</footer>
+</body>
+</html>

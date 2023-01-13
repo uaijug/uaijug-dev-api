@@ -8,6 +8,7 @@ import br.com.uaijug.uaijugdevapi.model.repository.CourseRepository;
 import br.com.uaijug.uaijugdevapi.model.service.CourseService;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -62,6 +63,15 @@ public class CourseServiceImpl implements CourseService {
                 Sort.by("id").ascending());
         courseRepository.findAll(sortedByIdAsc).forEach(courses::add);
         return courses;
+    }
+
+    @Override
+    public Page<Course> findPaginated(int pageNumber, int pageSize, String sortField, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
+        return courseRepository.findAll(pageable);
     }
 
     @Override

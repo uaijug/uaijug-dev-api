@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${add} ? 'Create a Schedule' : 'Edit a Schedule'"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${add} ? 'Create a Schedule:' : 'Edit a Schedule:'"/>
+<a th:href="@{/schedules}">Back to Schedule List</a>
+<br/><br/>
+<form th:action="${add} ? @{/schedules/add} : @{/schedules/{scheduleId}/edit(scheduleId=${schedule.id})}"
+      th:object="${schedule}" method="POST">
+    <table border="0">
+        <tr th:if="${schedule.id}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${schedule.id}">...</td>
+        </tr>
+        <tr>
+            <td>Tags</td>
+            <td>:</td>
+            <td>
+               <select id="clazz" th:field="*{clazz}">
+                    <option value="">Selecione o clazz</option>
+                    <option th:each="clazzz : ${classList}" th:value="${clazzz.id}" th:text="${clazzz.name}" selected="selected"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+        <tr>
+            <td>date</td>
+            <td>:</td>
+            <td><input type="text" th:field="*{date}"/></td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td>:</td>
+            <td><textarea th:field="*{note}" rows="4" cols="50"/></td>
+        </tr>
+    </table>
+    <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+</body>
+</html>

@@ -1,18 +1,7 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <title th:utext="${title}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout (~{:: main})}">
 <body>
-<h1 th:utext="${title}" />
-<a th:href="@{/developers}">Desenvolvedores</a><br />
-<a th:href="@{/courses}">Cursos</a><br />
-<a th:href="@{/events}">Eventos</a><br />
-<a th:href="@{/classes}">Classes</a>
-<a th:href="@{/tags}">Tags</a>
-<br/><br/>
-<div>Copyright © UaiJUG 2022</div>
+<main>
+    Dashboard 1
+</main>
 </body>
 </html>

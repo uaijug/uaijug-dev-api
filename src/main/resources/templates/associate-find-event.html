@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${add} ? 'Create a Associate' : 'Edit a Associate'" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script>
+        function yesnoCheck(value) {
+            //alert("http://www.google.com/search?output=search&q=" + value);
+
+            if (document.getElementById('nameCheck').checked) {
+                document.getElementById('nameCheck10').style.visibility = 'visible';
+                document.getElementById('nameCheck1').style.visibility = 'visible';
+
+                document.getElementById('codeCheck10').style.visibility = 'hidden';
+                document.getElementById('codeCheck1').style.visibility = 'hidden';
+
+                document.getElementById('emailCheck10').style.visibility = 'hidden';
+                document.getElementById('emailCheck1').style.visibility = 'hidden';
+            }
+            if (document.getElementById('codeCheck').checked) {
+                document.getElementById('codeCheck10').style.visibility = 'visible';
+                document.getElementById('codeCheck1').style.visibility = 'visible';
+
+                document.getElementById('nameCheck10').style.visibility = 'hidden';
+                document.getElementById('nameCheck1').style.visibility = 'hidden';
+
+                document.getElementById('emailCheck10').style.visibility = 'hidden';
+                document.getElementById('emailCheck1').style.visibility = 'hidden';
+            }
+            if (document.getElementById('emailCheck').checked) {
+                document.getElementById('emailCheck10').style.visibility = 'visible';
+                document.getElementById('emailCheck1').style.visibility = 'visible';
+
+                document.getElementById('nameCheck10').style.visibility = 'hidden';
+                document.getElementById('nameCheck1').style.visibility = 'hidden';
+
+                document.getElementById('codeCheck10').style.visibility = 'hidden';
+                document.getElementById('codeCheck1').style.visibility = 'hidden';
+            }
+        }
+    </script>
+</head>
+<body>
+<h1 th:text="${add} ? 'Create a Associate:' : 'Edit a Associate:'" />
+<br/><br/>
+Digite o nome ou codigo recebido ou o email:
+<br>
+Name <input type="radio" onclick="javascript:yesnoCheck(this.value);" name="rCheck" id="nameCheck" value="nameCheck"><br>
+Code <input type="radio" onclick="javascript:yesnoCheck(this.value);" name="rCheck" id="codeCheck" value="codeCheck" checked><br>
+email <input type="radio" onclick="javascript:yesnoCheck(this.value);" name="rCheck" id="emailCheck" value="emailCheck"><br>
+<br><br>
+<form th:action="${add} ? @{/associate-event/add}"
+      th:object="${associateEventDTO}" method="POST">
+    <table border="0">
+        <tr th:if="${associateEventDTO.id}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${associateEventDTO.id}">...</td>
+        </tr>
+        <select class="form-control" id="dropDownList" th:field="*{eventId}">
+            <option value="0">Evento</option>
+            <option th:each="evemt : ${events}"
+                    th:value="${evemt.id}"
+                    th:text="${evemt.name}"></option>
+        </select>
+        <tr>
+            <td><div id="nameCheck1" style="visibility:hidden">Name: </div></td>
+            <td><input id="nameCheck10" type="text" th:field="*{name}" style="visibility:hidden"/></td>
+            <td><p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+        <tr>
+            <td><div id="codeCheck1" style="visibility:visible">Code: </div></td>
+            <td><input id="codeCheck10" type="text" th:field="*{code}" style="visibility:visible"/></td>
+            <td><p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+        <tr>
+            <td><div id="emailCheck1" style="visibility:hidden">e-email: </div></td>
+            <td><input id="emailCheck10" type="text" th:field="*{email}" style="visibility:hidden"/></td>
+            <td><p class="alert alert-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+    </table>
+    <input type="submit" th:value="${add} ? 'Create' : 'Update'" />
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>

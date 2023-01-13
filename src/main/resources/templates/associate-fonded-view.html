@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Event</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>View Event</h1>
+<a th:href="@{/events}">Back to Event List</a>
+<br/><br/>
+<h1>View Associate</h1>
+<a th:href="@{/associates}">Back to Associate List</a>
+<br/><br/>
+<div th:if="${associate}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${associate.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${associate.name}">...</td>
+        </tr>
+        <tr>
+            <td>Code</td>
+            <td>:</td>
+            <td th:utext="${associate.code}">...</td>
+        </tr>
+        <tr>
+            <td>email</td>
+            <td>:</td>
+            <td th:utext="${associate.email}">...</td>
+        </tr>
+        <tr>
+            <td>Certificado</td>
+            <td>:</td>
+            <td th:utext="${associate.certificate} ? 'Tem certificado' : 'Não tem certificado' ">...</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+        <a th:href="@{/associates/{associateId}/code(associateId=${associate.code})}">Gerar Comprovante</a>
+    </div>
+    <form th:if="${allowDelete}" th:action="@{/associates/{associateId}/delete(associateId=${associate.id})}" method="POST">
+        Delete this associate? <input type="submit" th:value="Yes" />
+    </form>
+</div>
+<div style="width:40%;display: inline-block">
+    <img th:src="${'data:image/png;base64,' + qrcode}" alt="" height="250" width="250">
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>

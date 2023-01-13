@@ -1,40 +1,71 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <title>Developer List</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout (~{:: main})}">
 <body>
-<h1>Course List</h1>
+<main>
 
-<div>
-    <nobr>
-        <a th:href="@{/courses/add}">Add Course</a> |
-        <a th:href="@{/}">Back to Index</a>
-    </nobr>
-</div>
-<br/><br/>
-<div>
-    <table border="1">
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Edit</th>
-        </tr>
-        <tr th:each ="course : ${courses}">
-            <td><a th:href="@{/courses/{courseId}(courseId=${course.id})}" th:utext="${course.id}">...</a></td>
-            <td><a th:href="@{/courses/{courseId}(courseId=${course.id})}" th:utext="${course.title}">...</a></td>
-            <td><a th:href="@{/courses/{courseId}/edit(courseId=${course.id})}">Edit</a></td>
-        </tr>
-    </table>
-</div>
-<br/><br/>
-<div>
-    <nobr>
-        <span th:if="${hasPrev}"><a th:href="@{/courses?page={prev}(prev=${prev})}">Prev</a>&nbsp;&nbsp;&nbsp;</span>
-        <span th:if="${hasNext}"><a th:href="@{/courses?page={next}(next=${next})}">Next</a></span>
-    </nobr>
-</div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Course List</h5>
+                        <p>
+                        <div>
+                            <nobr>
+                                <a th:href="@{/courses/add}">Add Course</a>
+                            </nobr>
+                        </div>
+                        </p>
+
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><a
+                                        th:href="@{'/courses?page=' + ${currentPage} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Title</a>
+                                </th>
+                                <th scope="col">-</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="course : ${courses}">
+                                <th scope="row"><a th:href="@{/courses/{courseId}(courseId=${course.id})}"
+                                                   th:utext="${course.id}">...</a></th>
+                                <td><a th:href="@{/courses/{courseId}(courseId=${course.id})}"
+                                       th:utext="${course.title}">...</a></td>
+                                <td><a th:href="@{/courses/{courseId}/edit(courseId=${course.id})}">Edit</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                        <!-- Disabled and active states -->
+                        <div th:if="${totalPages > 1}">
+                            <!-- Disabled and active states -->
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <!--li class="page-item ${totalPages > 1} ?: 'disabled'">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" th:if="${totalPages > 1}" th:href="@{'/courses?page=' + ${initialPage}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+                                    </li-->
+                                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" th:if="${currentPage <= totalPages}" th:href="@{'/courses?page=' + ${currentPage - 1}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+                                    </li>
+                                    <li class="page-item" aria-current="page" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                        <a class="page-link" th:href="@{'/courses?page=' + ${i}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                                            <span th:class="${currentPage == i ? 'li-paginate-selected' : ''}">[[${i}]]</span></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/courses?page=' + ${currentPage + 1}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav><!-- End Disabled and active states -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
 </body>
 </html>

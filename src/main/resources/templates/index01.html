@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:utext="${title}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:utext="${title}" />
+<a th:href="@{/developers}">Desenvolvedores</a><br />
+<a th:href="@{/courses}">Cursos</a><br />
+<a th:href="@{/events}">Eventos</a><br />
+<a th:href="@{/classes}">Classes</a><br />
+<a th:href="@{/tags}">Tags</a><br />
+<a th:href="@{/schedules}">Schedules</a><br />
+<br/><br/>
+<div>Copyright © UaiJUG 2022</div>
+</body>
+</html>

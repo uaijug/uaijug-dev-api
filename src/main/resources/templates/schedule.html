@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>View Schedule</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1>View Schedule</h1>
+<a th:href="@{/schedules}">Back to Schedule List</a>
+<br/><br/>
+<div th:if="${schedule}">
+    <table border="0">
+        <tr>
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${schedule.id}">...</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>:</td>
+            <td th:utext="${schedule.name}">...</td>
+        </tr>
+    </table>
+    <br/><br/>
+    <div th:if="not ${allowDelete}">
+        <a th:href="@{/schedules/{scheduleId}/edit(scheduleId=${schedule.id})}">Edit</a> |
+        <a th:href="@{/schedules/{scheduleId}/delete(scheduleId=${schedule.id})}">Delete</a>
+    </div>
+    <form th:if="${allowDelete}" th:action="@{/schedules/{scheduleId}/delete(scheduleId=${schedule.id})}" method="POST">
+        Delete this schedule?
+    </form>
+</div>
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>

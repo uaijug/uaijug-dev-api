@@ -33,7 +33,7 @@ public class Course implements Serializable {
     @Size(max = 255, message = "Titulo deve ter no maximo de 255 caracteres")
     private String title;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss") //2022-07-13T11:42
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @NotNull(message = "A data inicial nao pode ser vazio")
     @Column(name = "start_date")

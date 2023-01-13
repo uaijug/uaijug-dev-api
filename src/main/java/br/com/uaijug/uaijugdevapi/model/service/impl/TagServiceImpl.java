@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagServiceImpl implements TagService {
@@ -59,7 +60,7 @@ public class TagServiceImpl implements TagService {
             }
             return tagRepository.save(tag);
         } else {
-            BadResourceException exc = new BadResourceException("Failed to save course");
+            BadResourceException exc = new BadResourceException("Failed to save Tag");
             exc.addErrorMessage("Course is null or empty");
             throw exc;
         }
@@ -92,5 +93,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public Long count() {
         return tagRepository.count();
+    }
+
+    @Override
+    public Optional<Tag> findByName(String name) {
+        return tagRepository.findByName(name);
     }
 }

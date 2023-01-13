@@ -8,17 +8,19 @@ import br.com.uaijug.uaijugdevapi.model.service.CourseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
 public class CourseController {
 
-    private final int ROW_PER_PAGE = 5;
+    private final int ROW_PER_PAGE = 10;
 
     @Autowired
     private CourseService courseService;
@@ -28,13 +30,28 @@ public class CourseController {
 
     @GetMapping(value = "/courses")
     public String get(Model model,
-                      @RequestParam(value = "page", defaultValue = "1") int pageNumber) {
-        List<Course> courses = courseService.findAll(pageNumber, ROW_PER_PAGE);
+                      @RequestParam(value = "page", defaultValue = "1") int pageNumber,
+                      @RequestParam(value = "sortField", defaultValue = "title") String sortField,
+                      @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir) {
+
+        Page<Course> coursesPaginated = courseService.findPaginated(pageNumber, ROW_PER_PAGE, sortField, sortDir);
+        List<Course> courses = coursesPaginated.getContent();
 
         long count = courseService.count();
         boolean hasPrev = pageNumber > 1;
         boolean hasNext = (pageNumber * ROW_PER_PAGE) < count;
+
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", coursesPaginated.getTotalPages());
+        model.addAttribute("totalItems", coursesPaginated.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
         model.addAttribute("courses", courses);
+        model.addAttribute("initialPage", "1");
+
         model.addAttribute("hasPrev", hasPrev);
         model.addAttribute("prev", pageNumber - 1);
         model.addAttribute("hasNext", hasNext);
