@@ -1,4 +1,123 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Au Register Forms by Colorlib</title>
+
+    <!-- Icons font CSS-->
+    <link th:href="@{/vendor-registration/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor-registration/font-awesome-4.7/css/font-awesome.min.css}" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link th:href="@{/vendor-registration/select2/select2.min.css}" rel="stylesheet" media="all">
+    <link th:href="@{/vendor-registration/datepicker/daterangepicker.css}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link th:href="@{/css/main-registration.css}" rel="stylesheet" media="all">
+</head>
+
+<body>
+<div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+    <div class="wrapper wrapper--w680">
+        <div class="card card-1">
+            <div class="card-heading"></div>
+            <div class="card-body">
+                <h2 class="title">Registration Info</h2>
+                <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+                <form th:action="@{/associate-find/{associateId}/edit(associateId=${associate.id})}" th:object="${associate}" method="POST">
+                    <div class="input-group">
+                        <input type="hidden" class="form-control" th:field="*{code}"/>
+                        <input class="input--style-1" type="hidden" placeholder="Id" name="associateId" th:value="${associate.id}" th:field="*{id}">
+                        <label for="inputName" class="col-sm-2 col-form-label">Nome:</label>
+                        <input id="inputName" class="input--style-1" type="text" placeholder="NAME" name="name" th:field="*{name}">
+                    </div>
+                    <div class="input-group">
+                        <label for="inputCpf" class="col-sm-2 col-form-label">CPF:</label>
+                        <input id="inputCpf" class="input--style-1" type="text" placeholder="CPF" name="name" th:field="*{documentId}">
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="inputPhone" class="col-sm-2 col-form-label">Telefone:</label>
+                                <input id="inputPhone" class="input--style-1" type="text" placeholder="Celular/Whatsapp" name="Celular" th:field="*{phone}">
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="inputEmail" class="col-sm-2 col-form-label">e-mail:</label>
+                                <input id="inputEmail" class="input--style-1" type="text" placeholder="E-Mail" name="Email" th:field="*{email}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-space">
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="inputBirthDate" class="col-sm-2 col-form-label">Data de nascimento:</label>
+                                <input id="inputBirthDate" class="input--style-1 js-datepicker" type="text" placeholder="BIRTHDATE" name="birthday" th:field="*{birthdate}">
+                                <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="inputGender" class="col-sm-2 col-form-label">Gênero:</label>
+                                <div id="inputGender" class="rs-select2 js-select-simple select--no-search">
+                                    <select name="gender" th:field="*{gender}">
+                                        <option disabled="disabled" selected="selected" value="0">GENDER</option>
+                                        <option value="MALE">Male</option>
+                                        <option VALUE="FEMALE">Female</option>
+                                        <option VALUE="OTHER">Other</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="inputAddress" class="col-sm-2 col-form-label">Endereço:</label>
+                        <input id="inputAddress" class="input--style-1" type="text" placeholder="address" name="address" th:field="*{address}">
+                    </div>
+                    <div class="input-group">
+                        <label for="inputCertificate" class="col-sm-2 col-form-label">Deseja Certificado?:</label>
+                        <div id="inputCertificate" class="rs-select2 js-select-simple select--no-search">
+                            <select name="certificate" th:field="*{certificate}">
+                                <option th:value="0" th:text="Não" selected></option>
+                                <option th:value="1" th:text="Sim"></option>
+                            </select>
+                            <div class="select-dropdown"></div>
+                        </div>
+                    </div>
+                    <div class="p-t-20">
+                        <button class="btn btn--radius btn--green" type="submit">Atualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Jquery JS-->
+<script th:src="@{/vendor-registration/jquery/jquery.min.js}"></script>
+<!-- Vendor JS-->
+<script th:src="@{/vendor-registration/select2/select2.min.js}"></script>
+<script th:src="@{/vendor-registration/datepicker/moment.min.js}"></script>
+<script th:src="@{/vendor-registration/datepicker/daterangepicker.js}"></script>
+<!-- Main JS-->
+<script th:src="@{/js/global-registration.js}"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<!-- end document-->
+<!----------------------------------------------------------------------------->
+<!--!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
@@ -15,12 +134,12 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">General Form Elements</h5>
+                    <h5 class="card-title">General Form Elements</h5-->
 
                     <!-- General Form Elements -->
-                    <form th:action="@{/associate-find/{associateId}/edit(associateId=${associate.id})}"
+                    <!--form th:action="@{/associate-find/{associateId}/edit(associateId=${associate.id})}"
                           th:object="${associate}" method="POST">
-                        <input type="hidden" class="form-control" th:field="*{code}"/>
+
                         <div class="row mb-3" th:if="${associate.id}">
                             <label for="inputText" class="col-sm-2 col-form-label">id</label>
                             <div class="col-sm-10">
@@ -36,19 +155,19 @@
                         <div class="row mb-3">
                             <label for="inputNumber" class="col-sm-2 col-form-label">documentId</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{documentId}">
+                                <input type="text" class="form-control" >
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputNumber" class="col-sm-2 col-form-label">phone</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{phone}">
+                                <input type="text" class="form-control" >
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="inputNumber" class="col-sm-2 col-form-label">email</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" th:field="*{email}">
+                                <input type="text" class="form-control">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -61,7 +180,7 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label">Certificado</label>
                             <div class="col-sm-10">
-                                <select class="form-select" aria-label="Default select example" th:field="*{certificate}">
+                                <select class="form-select" aria-label="Default select example" >
                                     <option th:value="0" th:text="Não" selected></option>
                                     <option th:value="1" th:text="Sim"></option>
                                 </select>
@@ -70,16 +189,16 @@
 
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label">Submit Button</label>
-                            <div class="col-sm-10">
+                            <div class="col-sm-10"-->
                                 <!--button type="submit" class="btn btn-primary">Submit Form</button-->
-                                <input type="submit" class="btn btn-primary"
+                                <!--input type="submit" class="btn btn-primary"
                                        th:value="${add} ? 'Create' : 'Update'"/>
                             </div>
                         </div>
 
-                    </form><!-- End General Form Elements -->
+                    </form--><!-- End General Form Elements -->
 
-                </div>
+                <!--/div>
             </div>
 
         </div>
@@ -87,4 +206,4 @@
 </section>
 <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
 </body>
-</html>
+</html-->

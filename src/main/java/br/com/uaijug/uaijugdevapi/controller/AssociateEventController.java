@@ -5,25 +5,24 @@ import br.com.uaijug.uaijugdevapi.exceptions.ResourceAlreadyExistsException;
 import br.com.uaijug.uaijugdevapi.exceptions.ResourceNotFoundException;
 import br.com.uaijug.uaijugdevapi.model.domain.Associate;
 import br.com.uaijug.uaijugdevapi.model.domain.Event;
-import br.com.uaijug.uaijugdevapi.model.domain.Tag;
 import br.com.uaijug.uaijugdevapi.model.dto.AssociateEventDTO;
 import br.com.uaijug.uaijugdevapi.model.service.AssociateService;
 import br.com.uaijug.uaijugdevapi.model.service.EventService;
 import br.com.uaijug.uaijugdevapi.util.QRCodeGenerator;
 import com.google.zxing.WriterException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -43,9 +42,9 @@ public class AssociateEventController {
         model.addAttribute("add", true);
         model.addAttribute("associateEventDTO", associateEventDTO);
 
-
+        //model.addAttribute("errorMessage", "");
         List<Event> eventList = eventService.list();
-        model.addAttribute("events", eventList);
+        model.addAttribute("eventList", eventList);
         return "associate-find-event";
     }
 
@@ -60,41 +59,90 @@ public class AssociateEventController {
                 return "associate-find-event";
             }
 
-            Optional<Associate> associate = associateService.findByNameOrCodeOrEmail(associateEventDTO.getName(), associateEventDTO.getCode(), associateEventDTO.getEmail());
-            if (associate.isPresent()) {
-                Associate associateResponse = associate.get();
-                log.info("Dados Recebidos: " + associateResponse);
+            String code = associateEventDTO.getCode();
 
-                Event byEventId = eventService.findById(associateEventDTO.getEventId());
-                //TODO - EventRegistration (Event, Associate)
-                model.addAttribute("associate", associateResponse);
+            if (StringUtils.isEmpty(code)) {
+                model.addAttribute("errorMessage", "Você deve escolher uma opção para fazer a busca ");
+
+                model.addAttribute("add", true);
+                model.addAttribute("associateEventDTO", new AssociateEventDTO());
+
+
+                List<Event> eventList = eventService.list();
+                model.addAttribute("events", eventList);
+                return "associate-find-event";
+            } else {
+                Optional<Associate> associate = associateService.findByCode(code);
+                if (associate.isPresent()) {
+                    Associate associateResponse = associate.get();
+                    log.info("Dados Recebidos: " + associateResponse);
+
+                    Long eventId = associateEventDTO.getEventId();
+                    if (eventId != null) {
+                        Event byEventId = eventService.findById(associateEventDTO.getEventId());
+                    } else {
+                        model.addAttribute("errorMessage", "O Evento deve ser escolhido");
+
+                        model.addAttribute("add", true);
+                        model.addAttribute("associateEventDTO", new AssociateEventDTO());
+
+
+                        List<Event> eventList = eventService.list();
+                        model.addAttribute("events", eventList);
+                        return "associate-find-event";
+                    }
+                    //TODO - EventRegistration (Event, Associate)
+
+                    model.addAttribute("associate", associateResponse);
+                    return "associate-fonded-event";
+                }
+                model.addAttribute("associate", associate);
                 return "associate-fonded-event";
             }
-
-
-            model.addAttribute("associate", associate);
-            return "associate-fonded-event";
         } catch (Exception ex) {
             // log exception first,
             // then show error
             String errorMessage = ex.getMessage();
             log.error(errorMessage);
-            model.addAttribute("errorMessage", errorMessage);
 
             //model.addAttribute("associate", associate);
             model.addAttribute("add", true);
-            return "associate-edit";
+            model.addAttribute("errorMessage", errorMessage);
+
+            model.addAttribute("associate", new Associate());
+            return "associate-fonded-event";
         }
     }
 
     @PostMapping(value = {"/associate-find/{associateId}/edit"})
     public String update(Model model,
                          @PathVariable long associateId,
-                         @ModelAttribute("associate") Associate associate) {
+                         @Valid @ModelAttribute("associate") Associate associate, BindingResult result) {
         try {
+
+            if (result.hasErrors()) {
+                Map<String, String> errors = new HashMap<>();
+
+                for (FieldError fieldError : result.getFieldErrors()) {
+                    errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+                }
+
+                model.addAttribute("errorMessage", errors);
+
+                model.addAttribute("add", false);
+
+                Associate byId = associateService.findById(associateId);
+                if (byId != null) {
+                    model.addAttribute("associate", byId);
+                } else {
+                    model.addAttribute("associate", new Associate());
+                }
+
+                return "associate-fonded-event";
+            }
             associate.setId(associateId);
             associateService.update(associate);
-            return "redirect:/associate-fonded-view/" + String.valueOf(associate.getId());
+            return "redirect:/associate-fonded-view/" + associate.getId();
         } catch (Exception ex) {
             // log exception first,
             // then show error
@@ -103,9 +151,14 @@ public class AssociateEventController {
             model.addAttribute("errorMessage", errorMessage);
 
             model.addAttribute("add", false);
-            return "contact-edit";
+            model.addAttribute("errorMessage", errorMessage);
+
+            model.addAttribute("associate", new Associate());
+            return "associate-fonded-event";
         }
     }
+
+
 
     @GetMapping(value = "/associate-fonded-view/{associateId}")
     public String getById(Model model, @PathVariable long associateId) {
@@ -113,7 +166,6 @@ public class AssociateEventController {
         byte[] image = new byte[0];
 
         try {
-
             associate = associateService.findById(associateId);
             String associateCode = "https://github.com/rogeriofontes/" + associate.getCode();
             image = QRCodeGenerator.getQRCodeImage(associateCode, 250, 250);

@@ -1,4 +1,119 @@
-<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout (~{:: main})}">
+<body>
+<main>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">General Form Elements</h5>
+
+                        <!-- General Form Elements -->
+                        <form th:action="${add} ? @{/events/add} : @{/events/{eventId}/edit(eventId=${event.id})}"
+                              th:object="${event}" method="POST">
+                            <div class="row mb-3" th:if="${event.id}">
+                                <label for="inputText" class="col-sm-2 col-form-label">id</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:value="${event.id}" th:field="*{id}"/>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{name}"/>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">date</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{date}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">local</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{local}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">Tempo da reuniao</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{meetingTime}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">Banner Principal</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{pricipalBanner}">
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">Descrição</label>
+                                <div class="col-sm-10">
+                                    <textarea type="text" th:field="*{description}"/></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">Banner Principal</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{pricipalBanner}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Tags</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" th:field="*{tags}" multiple="multiple">
+                                        <option th:each="tag : ${tagList}"
+                                                th:field="*{tags}"
+                                                th:value="${tag.id}"
+                                                th:text="${tag.name}">Part name</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Online</label>
+                                <div class="col-sm-10">
+                                    <select th:field="*{online}">
+                                        <option th:value="0" th:text="Não"></option>
+                                        <option th:value="1" th:text="Sim"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Submit Button</label>
+                                <div class="col-sm-10">
+                                    <!--button type="submit" class="btn btn-primary">Submit Form</button-->
+                                    <input type="submit" class="btn btn-primary"
+                                           th:value="${add} ? 'Create' : 'Update'"/>
+                                </div>
+                            </div>
+
+                        </form><!-- End General Form Elements -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+</main>
+
+<script>
+    $('#event_time').datetimepicker({
+        "allowInputToggle": true,
+        "showClose": true,
+        "showClear": true,
+        "showTodayButton": true,
+        "format": "dd/MM/yyyy",
+    });
+</script>
+
+</body>
+</html>
+<!--DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
@@ -83,8 +198,8 @@
     <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
 </form>
 
-<br/>
+<br/-->
 <!-- Check if errorMessage is not null and not empty -->
-<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+<!--div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
 </body>
-</html>
+</html-->

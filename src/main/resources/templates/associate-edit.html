@@ -50,6 +50,12 @@
                             </div>
 
                             <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">Birth Date</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" class="form-control" th:field="*{birthdate}" value="01/01/2001">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Certificado</label>
                                 <div class="col-sm-10">
                                     <select class="form-select" aria-label="Default select example" th:field="*{certificate}">
@@ -126,5 +132,16 @@
     <!-- Check if errorMessage is not null and not empty -->
     <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
 </main>
+
+<script>
+    $('#event_time').datetimepicker({
+        "allowInputToggle": true,
+        "showClose": true,
+        "showClear": true,
+        "showTodayButton": true,
+        "format": "dd/MM/yyyy",
+    });
+</script>
+
 </body>
 </html>

@@ -2,6 +2,7 @@ package br.com.uaijug.uaijugdevapi;
 
 import br.com.uaijug.uaijugdevapi.model.domain.Associate;
 import br.com.uaijug.uaijugdevapi.model.domain.Event;
+import br.com.uaijug.uaijugdevapi.model.domain.Gender;
 import br.com.uaijug.uaijugdevapi.model.domain.Tag;
 import br.com.uaijug.uaijugdevapi.model.service.AssociateService;
 import br.com.uaijug.uaijugdevapi.model.service.EventService;
@@ -10,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +32,11 @@ public class UaijugDevApiApplication implements CommandLineRunner {
 
 	@Autowired
 	private AssociateService associateService;
+
+	@Bean
+	public Java8TimeDialect java8TimeDialect() {
+		return new Java8TimeDialect();
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(UaijugDevApiApplication.class, args);
@@ -81,11 +91,14 @@ public class UaijugDevApiApplication implements CommandLineRunner {
 		associate.setId(1l);
 		associate.setName("Rogério Fontes Tomaz");
 		associate.setCode("143850");
+		associate.setPhone("(34) 99203-1938");
 		associate.setEmail("fontestz@gmail.com");
-		associate.setAddress("naoanoa");
+		associate.setAddress("R. Guerra Junqueira, 210 - TubalinaUberlândia - MG, 38412-004");
 		associate.setCertificate(false);
 		associate.setDocumentId("weew233");
-
+		associate.setGender(Gender.FEMALE);
+		String dataNow = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		//associate.setBirthdate(LocalDate.parse(dataNow, DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		associateService.save(associate);
 	}
 }

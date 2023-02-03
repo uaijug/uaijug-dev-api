@@ -1,4 +1,50 @@
-<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout (~{:: main})}">
+<body>
+<main>
+    <h1>View Associate</h1>
+    <a th:href="@{/events}">Back to Associate List</a>
+    <br/><br/>
+    <div th:if="${event}">
+        <table border="0">
+            <tr>
+                <td>ID</td>
+                <td>:</td>
+                <td th:utext="${event.id}">...</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>:</td>
+                <td th:utext="${event.name}">...</td>
+            </tr>
+            <tr>
+                <td>Data</td>
+                <td>:</td>
+                <td th:utext="${#temporals.format(event.date, 'dd/MM/yyyy HH:mm:ss')}">...</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>:</td>
+                <td th:utext="${event.name}">...</td>
+            </tr>
+            <tr th:each="tag : ${event.tags}">
+                <td th:text="${tag.id}"></td>
+                <td th:text="${tag.name}"></td>
+            </tr>
+        </table>
+        <br/><br/>
+        <div th:if="not ${allowDelete}">
+            <a th:href="@{/events/{eventId}/edit(eventId=${event.id})}">Edit</a> |
+            <a th:href="@{/events/{eventId}/delete(eventId=${event.id})}">Delete</a>
+        </div>
+        <form th:if="${allowDelete}" th:action="@{/events/{eventId}/delete(eventId=${event.id})}" method="POST">
+            Delete this event? <input type="submit" th:value="Yes" />
+        </form>
+    </div>
+    <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</main>
+</body>
+</html>
+<!--DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
@@ -47,4 +93,4 @@
 </div>
 <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
 </body>
-</html>
+</html-->
