@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout (~{:: main})}">
+<body>
+<main>
+    <h1>View Associate</h1>
+    <a th:href="@{/suppliers}">Back to Associate List</a>
+    <br/><br/>
+    <div th:if="${supplier}">
+        <table border="0">
+            <tr>
+                <td>ID</td>
+                <td>:</td>
+                <td th:utext="${supplier.id}">...</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>:</td>
+                <td th:utext="${supplier.name}">...</td>
+            </tr>
+            <tr>
+                <td>Code</td>
+                <td>:</td>
+                <td th:utext="${supplier.code}">...</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>:</td>
+                <td th:utext="${supplier.email}">...</td>
+            </tr>
+            <tr>
+                <td>Certificado</td>
+                <td>:</td>
+                <td th:utext="${supplier.certificate} ? 'Tem certificado' : 'Não tem certificado' ">...</td>
+            </tr>
+        </table>
+        <br/><br/>
+        <div th:if="not ${allowDelete}">
+            <a th:href="@{/suppliers/{supplierId}/edit(supplierId=${supplier.id})}">Edit</a> |
+            <a th:href="@{/suppliers/{supplierId}/delete(supplierId=${supplier.id})}">Delete</a> |
+            <a th:href="@{/suppliers/{supplierId}/code(supplierId=${supplier.code})}">Code</a>
+        </div>
+        <form th:if="${allowDelete}" th:action="@{/suppliers/{supplierId}/delete(supplierId=${supplier.id})}" method="POST">
+            Delete this supplier? <input type="submit" th:value="Yes" />
+        </form>
+    </div>
+    <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</main>
+</body>
+</html>

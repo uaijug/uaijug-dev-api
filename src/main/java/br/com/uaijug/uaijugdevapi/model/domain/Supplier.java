@@ -10,18 +10,18 @@ import org.springframework.validation.annotation.Validated;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Validated
 @Entity
-@Table(name = "tb_associate", schema = "devs")
+@Table(name = "tb_supplier", schema = "devs")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Associate implements Serializable {
+public class Supplier implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,16 +38,13 @@ public class Associate implements Serializable {
     private String code;
 
     @NotBlank
-    @Column(name = "document_id")
-    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$", message = "CPF number")
-    private String documentId; //CPF
-
+    @Size(max = 100)
+    private String documentId;
 
     @NotBlank(message = "O Campo telefone não pode estar vazio!")
     @Pattern(regexp ="^\\(\\d{2}\\)[ ]\\d{5}-\\d{4}$", message = "O Campo telefone deve ter o seguinte formato (99) 99203-1938")
     @Size(max = 25)
     private String phone;
-
     @NotBlank(message = "O Email telefone não pode estar vazio!")
     @Email(message = "O Email tem que ter o formato correto")
     @Size(max = 100)
@@ -56,27 +53,15 @@ public class Associate implements Serializable {
     @Size(max = 500)
     private String address;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private LocalDate birthdate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime birthdate;
 
     //@Size(max = 50)
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @Column(name = "supplier_type")
+    private SupplierType supplierType;
 
     @NotNull(message = "Situacao do certificado deve ser definido")
-    private Boolean certificate;
-
-    public void update(Long id, Associate associate) {
-        this.id = id;
-        this.name = associate.getName();
-        this.code = associate.getCode();
-        this.documentId = associate.getDocumentId();
-        this.phone = associate.getPhone();
-        this.email = associate.getEmail();
-        this.address = associate.getAddress();
-        this.birthdate = associate.getBirthdate();
-        this.gender = associate.getGender();
-        this.certificate = associate.getCertificate();
-    }
+    private Boolean active;
 }

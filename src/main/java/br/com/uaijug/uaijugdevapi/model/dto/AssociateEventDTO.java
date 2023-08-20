@@ -25,6 +25,7 @@ public class AssociateEventDTO implements Serializable {
     @NotEmpty(message = "Event can not be empty!!")
     private Long eventId;
 
+    private String eventName;
 
     @Size(max = 100)
     private String name;

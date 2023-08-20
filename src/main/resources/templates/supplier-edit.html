@@ -10,62 +10,71 @@
                         <h5 class="card-title">General Form Elements</h5>
 
                         <!-- General Form Elements -->
-                        <form th:action="${add} ? @{/courses/add} : @{/courses/{courseId}/edit(courseId=${course.id})}"
-                              th:object="${course}" method="POST" enctype="multipart/form-data">
-                            <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">file</label>
-                                <div class="col-sm-10">
-                                    <input id="input-file" type="file" name="file"/>
-                                    <!--button class="btn btn-sm btn-outline-success float-right" type="submit">
-                                        Upload
-                                    </button-->
-                                </div>
-                                <div
-                                        th:if="${message != null}"
-                                        class="alert alert-secondary alert-dismissible fade show text-center message mt-3"
-                                        role="alert">
-                                    [[${message}]]
-                                    <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                            </div>
-                            <div class="row mb-3" th:if="${course.id}">
+                        <form th:action="${add} ? @{/suppliers/add} : @{/suppliers/{supplierId}/edit(supplierId=${supplier.id})}"
+                              th:object="${supplier}" method="POST">
+                            <div class="row mb-3" th:if="${supplier.id}">
                                 <label for="inputText" class="col-sm-2 col-form-label">id</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:value="${course.id}" th:field="*{id}"/>
+                                    <input type="text" class="form-control" th:value="${supplier.id}" th:field="*{id}"/>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Tĩtulo</label>
+                                <label for="inputText" class="col-sm-2 col-form-label">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" th:field="*{title}"/>
+                                    <input type="text" class="form-control" th:field="*{name}"/>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputNumber" class="col-sm-2 col-form-label">Carga Horãria</label>
+                                <label for="inputNumber" class="col-sm-2 col-form-label">documentId</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" th:field="*{workload}">
+                                    <input type="text" class="form-control" th:field="*{documentId}">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputDate" class="col-sm-2 col-form-label">Start Date</label>
+                                <label for="inputNumber" class="col-sm-2 col-form-label">phone</label>
                                 <div class="col-sm-10">
-                                    <!--input type="datetime-local" class="form-control" th:field="*{startDate}"
-                                           value="2018-06-12T19:30"-->
-                                    <input type="text" id="startDate" name="startDate" class="form-control" th:field="*{startDate}">
+                                    <input type="text" class="form-control" th:field="*{phone}">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputTime" class="col-sm-2 col-form-label">End Date</label>
+                                <label for="inputNumber" class="col-sm-2 col-form-label">email</label>
                                 <div class="col-sm-10">
-                                    <!--input type="datetime-local" class="form-control" th:field="*{endDate}"
-                                           value="2018-06-12T19:30"-->
-                                    <input type="text" id="endDate" name="endDate" class="form-control" th:field="*{endDate}">
+                                    <input type="text" class="form-control" th:field="*{email}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">active</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{active}">
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">active</label>
+                                <div class="col-sm-10">
+                                    <label for="inputGender" class="col-sm-2 col-form-label">Gênero:</label>
+                                    <div id="inputGender" class="rs-select2 js-select-simple select--no-search">
+                                        <select name="supplierType" th:field="*{supplierType}">
+                                            <option disabled="disabled" selected="selected" value="0">Suppilier Type</option>
+                                            <option value="SUB_CONTRACTORS">SERVICE</option>
+                                            <option VALUE="MANUFACTURES">MANUFACTURES</option>
+                                            <option VALUE="PRODUCERS">PRODUCERS</option>
+                                            <option VALUE="DISTRIBUTORS">DISTRIBUTORS</option>
+                                            <option VALUE="IMPORTERS">IMPORTERS</option>
+                                            <option VALUE="OTHER">Other</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="inputNumber" class="col-sm-2 col-form-label">Birth Date</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" class="form-control" th:field="*{birthdate}"
+                                           value="01/01/2001">
+                                </div>
+                            </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Certificado</label>
                                 <div class="col-sm-10">
@@ -95,16 +104,16 @@
         </div>
     </section>
     <!----------->
-    <h1 th:text="${add} ? 'Create a Course:' : 'Edit a Course:'"/>
-    <a th:href="@{/courses}">Back to Course List</a>
+    <!--h1 th:text="${add} ? 'Create a Supplier:' : 'Edit a Supplier:'"/>
+    <a th:href="@{/suppliers}">Back to Supplier List</a>
     <br/><br/>
-    <form th:action="${add} ? @{/courses/add} : @{/courses/{courseId}/edit(courseId=${course.id})}"
-          th:object="${course}" method="POST">
+    <form th:action="${add} ? @{/suppliers/add} : @{/suppliers/{supplierId}/edit(supplierId=${supplier.id})}"
+          th:object="${supplier}" method="POST">
         <table border="0">
-            <tr th:if="${course.id}">
+            <tr th:if="${supplier.id}">
                 <td>ID</td>
                 <td>:</td>
-                <td th:utext="${course.id}">...</td>
+                <td th:utext="${supplier.id}">...</td>
             </tr>
             <tr>
                 <td>Titulo</td>
@@ -124,7 +133,7 @@
             <tr>
                 <td>Carga Horaria</td>
                 <td>:</td>
-                <td><input type="number"/></td>
+                <td><input type="number" /></td>
             </tr>
             <tr>
                 <td>Certificado</td>
@@ -140,31 +149,21 @@
         <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
     </form>
 
-    <br/>
+    <br/-->
     <!-- Check if errorMessage is not null and not empty -->
     <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
 </main>
+
 <script>
-	$(document).ready(function(){
+    $('#event_time').datetimepicker({
+        "allowInputToggle": true,
+        "showClose": true,
+        "showClear": true,
+        "showTodayButton": true,
+        "format": "dd/MM/yyyy",
+    });
 
-		var startDate=$('input[name="startDate"]'); //our date input has the name "date"
-		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-		startDate.datepicker({
-			format: 'dd/MM/yyyy HH:mm:ss',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-		})
-
-		var endDate=$('input[name="endDate"]'); //our date input has the name "date"
-		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-		endDate.datepicker({
-			format: 'dd/MM/yyyy HH:mm:ss',
-			container: container,
-			todayHighlight: true,
-			autoclose: true,
-		})
-	})
 </script>
+
 </body>
 </html>

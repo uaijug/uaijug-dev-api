@@ -5,6 +5,7 @@ import br.com.uaijug.uaijugdevapi.model.domain.Associate;
 import br.com.uaijug.uaijugdevapi.model.service.AssociateService;
 import br.com.uaijug.uaijugdevapi.util.PDFGenerator;
 import br.com.uaijug.uaijugdevapi.util.QRCodeGenerator;
+import br.com.uaijug.uaijugdevapi.util.UrlUtils;
 import com.google.zxing.WriterException;
 import com.itextpdf.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,23 +64,24 @@ public class AssociateController {
 
     @GetMapping(value = "/associates/{associateCode}/code")
     public ResponseEntity<InputStreamResource> getByCode(Model model, @PathVariable String associateCode) {
-        Optional<Associate> associate = null;
-        String urlBase = "https://github.com/rogeriofontes/";
+
         try {
-            associate = associateService.findByCode(associateCode);
+            Optional<Associate> associate = associateService.findByCode(associateCode);
+            if (associate.isPresent()) {
+                URI urlBase = UrlUtils.getUriAssociateFondedView(associate.get().getId());
 
-            byte[] pngData = QRCodeGenerator.getQRCodeImage(urlBase + associateCode, 0, 0);
+                byte[] pngData = QRCodeGenerator.getQRCodeImage(String.valueOf(urlBase), 0, 0);
 
-            InputStreamResource inputStreamResource =
-                    PDFGenerator.InputStreamResource(pngData);
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Disposition", "inline; "
-                    + "filename=my-file.pdf");
+                InputStreamResource inputStreamResource =
+                        PDFGenerator.InputStreamResource(pngData, "AWS UG Brain", associate.get());
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Content-Disposition", "inline; "
+                        + "filename=ficha-inscricao-evento.pdf");
 
-            return ResponseEntity.ok().headers(headers)
-                    .contentType(MediaType.APPLICATION_PDF)
-                    .body(inputStreamResource);
-
+                return ResponseEntity.ok().headers(headers)
+                        .contentType(MediaType.APPLICATION_PDF)
+                        .body(inputStreamResource);
+            }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (DocumentException e) {
@@ -88,6 +91,8 @@ public class AssociateController {
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }
+
+        return null;
     }
 
     @GetMapping(value = {"/associates/add"})

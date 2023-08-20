@@ -1,5 +1,6 @@
 package br.com.uaijug.uaijugdevapi.controller;
 
+import br.com.uaijug.uaijugdevapi.model.domain.Associate;
 import br.com.uaijug.uaijugdevapi.util.PDFGenerator;
 import br.com.uaijug.uaijugdevapi.util.QRCodeGenerator;
 import com.google.zxing.WriterException;
@@ -67,10 +68,10 @@ public class QrCodeController {
         byte[] pngData = QRCodeGenerator.getQRCodeImage(associateCode + text, 0, 0);
 
         InputStreamResource inputStreamResource =
-                PDFGenerator.InputStreamResource(pngData);
+                PDFGenerator.InputStreamResource(pngData, "AWS UG Brain", new Associate());
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; "
-                + "filename=my-file.pdf");
+                + "filename=ficha-inscricao-evento.pdf");
 
         return ResponseEntity.ok().headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)

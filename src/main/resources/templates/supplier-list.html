@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout (~{:: main})}">
+<body>
+<main>
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Supplier List</h5>
+                        <p>
+                        <div>
+                            <nobr>
+                                <a th:href="@{/suppliers/add}">Add Supplier</a>
+                            </nobr>
+                        </div>
+                        </p>
+
+                        <!-- Table with stripped rows -->
+                        <table class="table datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><a
+                                        th:href="@{'/suppliers?page=' + ${currentPage} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Name</a>
+                                </th>
+                                <th scope="col">Code</th>
+                                <th scope="col">-</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="supplier : ${suppliers}">
+                                <th scope="row"><a th:href="@{/suppliers/{supplierId}(supplierId=${supplier.id})}"
+                                                   th:utext="${supplier.id}">...</a></th>
+                                <td><a th:href="@{/suppliers/{supplierId}(supplierId=${supplier.id})}"
+                                       th:utext="${supplier.name}">...</a></td>
+                                <td><a th:utext="${supplier.code}">...</a></td>
+                                <td><a th:href="@{/suppliers/{supplierId}/edit(supplierId=${supplier.id})}">Edit</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                        <!-- Disabled and active states -->
+                        <div th:if="${totalPages > 1}">
+                            <!-- Disabled and active states -->
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <!--li class="page-item ${totalPages > 1} ?: 'disabled'">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" th:if="${totalPages > 1}" th:href="@{'/suppliers?page=' + ${initialPage}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+                                    </li-->
+                                    <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                                        <a class="page-link" tabindex="-1" aria-disabled="true" th:if="${currentPage <= totalPages}" th:href="@{'/suppliers?page=' + ${currentPage - 1}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+                                    </li>
+                                    <li class="page-item" aria-current="page" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                                        <a class="page-link" th:href="@{'/suppliers?page=' + ${i}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                                            <span th:class="${currentPage == i ? 'li-paginate-selected' : ''}">[[${i}]]</span></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" th:if="${currentPage < totalPages}" th:href="@{'/suppliers?page=' + ${currentPage + 1}+ '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav><!-- End Disabled and active states -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

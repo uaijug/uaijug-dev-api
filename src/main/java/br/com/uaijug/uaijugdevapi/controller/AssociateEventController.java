@@ -9,6 +9,7 @@ import br.com.uaijug.uaijugdevapi.model.dto.AssociateEventDTO;
 import br.com.uaijug.uaijugdevapi.model.service.AssociateService;
 import br.com.uaijug.uaijugdevapi.model.service.EventService;
 import br.com.uaijug.uaijugdevapi.util.QRCodeGenerator;
+import br.com.uaijug.uaijugdevapi.util.UrlUtils;
 import com.google.zxing.WriterException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 
 @Slf4j
@@ -69,7 +71,7 @@ public class AssociateEventController {
 
 
                 List<Event> eventList = eventService.list();
-                model.addAttribute("events", eventList);
+                model.addAttribute("eventList", eventList);
                 return "associate-find-event";
             } else {
                 Optional<Associate> associate = associateService.findByCode(code);
@@ -81,23 +83,32 @@ public class AssociateEventController {
                     if (eventId != null) {
                         Event byEventId = eventService.findById(associateEventDTO.getEventId());
                     } else {
-                        model.addAttribute("errorMessage", "O Evento deve ser escolhido");
+                        model.addAttribute("errorMessage", "O Evento deve ser escolhido e o código de registro não pode ficar vazio");
 
                         model.addAttribute("add", true);
                         model.addAttribute("associateEventDTO", new AssociateEventDTO());
 
 
                         List<Event> eventList = eventService.list();
-                        model.addAttribute("events", eventList);
+                        model.addAttribute("eventList", eventList);
                         return "associate-find-event";
                     }
                     //TODO - EventRegistration (Event, Associate)
 
                     model.addAttribute("associate", associateResponse);
                     return "associate-fonded-event";
+                } else {
+                    model.addAttribute("associate", associate);
+                    model.addAttribute("errorMessage", "O Evento deve ser escolhido e o código de registro não pode ficar vazio");
+
+                    model.addAttribute("add", true);
+                    model.addAttribute("associateEventDTO", new AssociateEventDTO());
+
+
+                    List<Event> eventList = eventService.list();
+                    model.addAttribute("eventList", eventList);
+                    return "associate-find-event";
                 }
-                model.addAttribute("associate", associate);
-                return "associate-fonded-event";
             }
         } catch (Exception ex) {
             // log exception first,
@@ -140,7 +151,7 @@ public class AssociateEventController {
 
                 return "associate-fonded-event";
             }
-            associate.setId(associateId);
+            associate.update(associateId, associate);
             associateService.update(associate);
             return "redirect:/associate-fonded-view/" + associate.getId();
         } catch (Exception ex) {
@@ -159,16 +170,20 @@ public class AssociateEventController {
     }
 
 
-
     @GetMapping(value = "/associate-fonded-view/{associateId}")
     public String getById(Model model, @PathVariable long associateId) {
-        Associate associate = null;
         byte[] image = new byte[0];
 
         try {
-            associate = associateService.findById(associateId);
-            String associateCode = "https://github.com/rogeriofontes/" + associate.getCode();
-            image = QRCodeGenerator.getQRCodeImage(associateCode, 250, 250);
+            Associate associate = associateService.findById(associateId);
+            URI urlBase = UrlUtils.getUriAssociateFondedView(associate.getId());
+
+            image = QRCodeGenerator.getQRCodeImage(String.valueOf(urlBase), 250, 250);
+
+            String qrcode = Base64.getEncoder().encodeToString(image);
+            model.addAttribute("qrcode", qrcode);
+            model.addAttribute("associate", associate);
+            return "associate-fonded-view";
 
         } catch (ResourceNotFoundException ex) {
             model.addAttribute("errorMessage", "Associate not found");
@@ -180,7 +195,7 @@ public class AssociateEventController {
 
         String qrcode = Base64.getEncoder().encodeToString(image);
         model.addAttribute("qrcode", qrcode);
-        model.addAttribute("associate", associate);
+        model.addAttribute("associate", new Associate());
         return "associate-fonded-view";
     }
 

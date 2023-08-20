@@ -54,8 +54,8 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
             text.setPaddingLeft(10);
             text.setBorder(Rectangle.BOTTOM);
             text.setBorderColor(BaseColor.LIGHT_GRAY);
-            text.addElement(new Phrase("iText PDF Header Footer Example", new Font(Font.FontFamily.HELVETICA, 12)));
-            text.addElement(new Phrase("https://memorynotfound.com", new Font(Font.FontFamily.HELVETICA, 8)));
+            text.addElement(new Phrase("UaiJUG", new Font(Font.FontFamily.HELVETICA, 12)));
+            text.addElement(new Phrase("https://uaijug.com.br", new Font(Font.FontFamily.HELVETICA, 8)));
             header.addCell(text);
 
             // write content
@@ -81,7 +81,7 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
             footer.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
 
             // add copyright
-            footer.addCell(new Phrase("\u00A9 Memorynotfound.com", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            footer.addCell(new Phrase("\u00A9 www.uaijug.com.br", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
 
             // add current page count
             footer.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);

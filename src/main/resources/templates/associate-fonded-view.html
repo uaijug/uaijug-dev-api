@@ -9,7 +9,7 @@
     <meta name="keywords" content="Colorlib Templates">
 
     <!-- Title Page-->
-    <title>Au Register Forms by Colorlib</title>
+    <title>Sistema de confirmação de Eventos</title>
 
     <!-- Icons font CSS-->
     <link th:href="@{/vendor-registration/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet"
@@ -33,7 +33,7 @@
         <div class="card card-1">
             <div class="card-heading"></div>
             <div class="card-body" th:if="${associate}">
-                <h2 class="title">Registration Infos </h2>
+                <h2 class="title">Informaçôes de registro</h2>
                 <form method="POST">
                     <div class="row row-space">
                         <div class="col-2">
@@ -50,7 +50,7 @@
                                 <label for="inputBirthDate" class="col-sm-2 col-form-label">Data
                                     nascimento:</label><br/><br/>
                                 <span id="inputBirthDate"
-                                      th:utext="${#temporals.format(associate.birthdate, 'dd/MMM/yyyy')}">...</span>
+                                      th:utext="${#temporals.format(associate.birthdate, 'dd/MM/yyyy')}">...</span>
                             </div>
                         </div>
                         <div class="col-2">

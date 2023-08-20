@@ -6,13 +6,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Validated
 @Entity
-@Table(name = "tb_course", schema = "devs")
+@Table(name = "tb_event_registration", schema = "devs")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Data
 @NoArgsConstructor
@@ -27,11 +25,11 @@ public class EventRegistration implements Serializable  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O Name nao pode ser vazio")
-    @Size(max = 255, message = "Titulo deve ter no maximo de 255 caracteres")
-    private String name;
-
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
+
+    @ManyToOne
+    @JoinColumn(name = "associate_id")
+    private Associate associate;
 }

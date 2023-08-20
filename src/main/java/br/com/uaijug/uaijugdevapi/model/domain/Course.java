@@ -50,4 +50,6 @@ public class Course implements Serializable {
 
     @NotNull(message = "Situacao do certificado deve ser definido")
     private Boolean certificate;
+
+    private String file;
 }

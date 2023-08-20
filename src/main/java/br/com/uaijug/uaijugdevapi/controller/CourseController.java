@@ -5,6 +5,7 @@ import br.com.uaijug.uaijugdevapi.model.domain.Class;
 import br.com.uaijug.uaijugdevapi.model.domain.Course;
 import br.com.uaijug.uaijugdevapi.model.service.ClassService;
 import br.com.uaijug.uaijugdevapi.model.service.CourseService;
+import br.com.uaijug.uaijugdevapi.model.service.FilesStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,9 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    FilesStorageService storageService;
 
     @Autowired
     private ClassService classService;
@@ -84,8 +89,13 @@ public class CourseController {
 
     @PostMapping(value = "/courses/add")
     public String add(Model model,
+                      @RequestParam("file") MultipartFile file,
                       @ModelAttribute("course") Course course) {
+        log.info("File: " + file.getName());
+
         try {
+            storageService.save(file);
+            course.setFile(file.getName());
             Course newCourse = courseService.save(course);
             return "redirect:/courses/" + String.valueOf(newCourse.getId());
         } catch (Exception ex) {

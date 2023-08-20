@@ -9,7 +9,7 @@
     <meta name="keywords" content="Colorlib Templates">
 
     <!-- Title Page-->
-    <title>Au Register Forms by Colorlib</title>
+    <title>Sistema de confirmação de Eventos</title>
 
     <!-- Icons font CSS-->
     <link th:href="@{/vendor-registration/mdi-font/css/material-design-iconic-font.min.css}" rel="stylesheet" media="all">
@@ -31,7 +31,7 @@
         <div class="card card-1">
             <div class="card-heading"></div>
             <div class="card-body">
-                <h2 class="title">Registration Info</h2>
+                <h2 class="title">Informaçôes de registro</h2>
                 <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
                 <form th:action="@{/associate-find/{associateId}/edit(associateId=${associate.id})}" th:object="${associate}" method="POST">
                     <div class="input-group">
@@ -72,9 +72,9 @@
                                 <div id="inputGender" class="rs-select2 js-select-simple select--no-search">
                                     <select name="gender" th:field="*{gender}">
                                         <option disabled="disabled" selected="selected" value="0">GENDER</option>
-                                        <option value="MALE">Male</option>
-                                        <option VALUE="FEMALE">Female</option>
-                                        <option VALUE="OTHER">Other</option>
+                                        <option value="MALE">Masculino</option>
+                                        <option VALUE="FEMALE">Feminino</option>
+                                        <option VALUE="OTHER">Não Definido</option>
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>
