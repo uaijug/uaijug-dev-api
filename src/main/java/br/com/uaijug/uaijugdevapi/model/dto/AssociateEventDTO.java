@@ -1,13 +1,7 @@
 package br.com.uaijug.uaijugdevapi.model.dto;
 
-import br.com.uaijug.uaijugdevapi.model.domain.Class;
-import br.com.uaijug.uaijugdevapi.model.domain.Event;
 import lombok.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.validation.annotation.Validated;
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
